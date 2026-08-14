@@ -1,0 +1,6 @@
+streamlit
+pandas
+openpyxl
+python-docx
+num2words
+holidays
