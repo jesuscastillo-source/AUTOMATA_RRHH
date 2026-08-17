@@ -11,6 +11,7 @@ Cómo correr localmente:
 """
 
 import io
+import re
 import zipfile
 import datetime
 from datetime import timedelta
@@ -206,17 +207,33 @@ def leer_excel_obrero_capataz(file_bytes, date_headers):
 # REEMPLAZO DE MERGEFIELDS EN WORD
 # =========================================================
 
+MERGEFIELD_RE = re.compile(r"«([^»]*)»")
+
+
 def replace_mergefield_con_formato(doc, replacements):
-    """replacements: header -> (valor, bold, size)."""
+    """replacements: header (en MAYÚSCULAS) -> (valor, bold, size).
+    Busca cualquier «campo» sin importar si el molde lo tiene en mayúsculas,
+    minúsculas o mezclado — siempre lo compara en mayúsculas."""
     def procesar(parrafo):
         for run in parrafo.runs:
-            for key, (valor, bold, size) in replacements.items():
-                marcador = f"«{key}»"
-                if marcador in run.text:
-                    run.text = run.text.replace(marcador, str(valor))
-                    run.bold = bold
-                    if size:
-                        run.font.size = Pt(size)
+            estado = {}
+
+            def sub(m):
+                campo = m.group(1).strip().upper()
+                if campo in replacements:
+                    valor, bold, size = replacements[campo]
+                    estado["bold"] = bold
+                    estado["size"] = size
+                    return str(valor)
+                return m.group(0)
+
+            nuevo_texto = MERGEFIELD_RE.sub(sub, run.text)
+            if nuevo_texto != run.text:
+                run.text = nuevo_texto
+                if "bold" in estado:
+                    run.bold = estado["bold"]
+                if estado.get("size"):
+                    run.font.size = Pt(estado["size"])
 
     for p in doc.paragraphs:
         procesar(p)
@@ -228,17 +245,27 @@ def replace_mergefield_con_formato(doc, replacements):
 
 
 def replace_mergefields_simple(doc, replacements, bold_keys=None):
-    """replacements: header -> valor (string plano)."""
+    """replacements: header (en MAYÚSCULAS) -> valor (string plano).
+    Misma lógica insensible a mayúsculas/minúsculas que la versión con formato."""
     bold_keys = bold_keys or set()
 
     def procesar(parrafo):
         for run in parrafo.runs:
-            for key, valor in replacements.items():
-                marcador = f"«{key}»"
-                if marcador in run.text:
-                    run.text = run.text.replace(marcador, str(valor))
-                    if key in bold_keys:
-                        run.bold = True
+            estado = {}
+
+            def sub(m):
+                campo = m.group(1).strip().upper()
+                if campo in replacements:
+                    if campo in bold_keys:
+                        estado["bold"] = True
+                    return str(replacements[campo])
+                return m.group(0)
+
+            nuevo_texto = MERGEFIELD_RE.sub(sub, run.text)
+            if nuevo_texto != run.text:
+                run.text = nuevo_texto
+                if estado.get("bold"):
+                    run.bold = True
 
     for p in doc.paragraphs:
         procesar(p)
