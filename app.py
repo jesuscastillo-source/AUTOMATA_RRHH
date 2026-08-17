@@ -11,6 +11,7 @@ Cómo correr localmente:
 """
 
 import io
+import os
 import re
 import zipfile
 import datetime
@@ -329,11 +330,48 @@ def calcular_dias_inhabiles(fecha_fin, dias_proporcionales):
 # UI STREAMLIT
 # =========================================================
 
-st.set_page_config(page_title="Generador de Documentos RRHH", page_icon="📄", layout="wide")
-st.title("📄 Generador de Documentos RRHH")
-st.caption(
-    "Sube tu Excel de datos y tus plantillas Word/Excel en cada pestaña. "
-    "Nada se guarda: los archivos se procesan en memoria y el ZIP se genera al vuelo."
+st.set_page_config(page_title="Automatización RR.HH.", page_icon="🤖", layout="wide")
+
+# --- Banner ---
+import base64
+
+def _banner_base64():
+    with open(os.path.join(os.path.dirname(__file__), "assets", "banner.jpg"), "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
+st.markdown(
+    """
+    <style>
+    .block-container { padding-top: 1.5rem; max-width: 1180px; }
+
+    .hero-banner {
+        border-radius: 20px;
+        overflow: hidden;
+        margin-bottom: 1.8rem;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    }
+    .hero-banner img { width: 100%; height: auto; display: block; }
+
+    .stTabs [data-baseweb="tab-list"] { gap: 4px; }
+    .stTabs [data-baseweb="tab"] {
+        border-radius: 10px 10px 0 0;
+        padding: 0.6rem 1.1rem;
+        font-weight: 500;
+    }
+    .stButton>button {
+        border-radius: 10px;
+        font-weight: 600;
+        border: 1px solid #5F9E72;
+    }
+    .stButton>button:hover { border-color: #7FB88F; color: #7FB88F; }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown(
+    f'<div class="hero-banner"><img src="data:image/jpeg;base64,{_banner_base64()}" alt="Automatización de Documentación RR.HH."></div>',
+    unsafe_allow_html=True,
 )
 
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
