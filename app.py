@@ -353,37 +353,38 @@ st.markdown(
     .hero-banner img { width: 100%; height: auto; display: block; }
 
     /* --- Pestañas como botones tipo "pill" --- */
-    .stTabs [data-baseweb="tab-border"] { display: none; }
-    .stTabs [data-baseweb="tab-highlight"] { background-color: transparent; }
-    .stTabs [data-baseweb="tab-list"] {
+    .stTabs [role="tablist"] {
         gap: 10px;
         flex-wrap: wrap;
-        padding-bottom: 0.5rem;
+        border-bottom: none !important;
+        padding-bottom: 0.6rem;
     }
-    .stTabs [data-baseweb="tab"] {
+    .stTabs [data-testid="stTab"] {
         height: auto;
-        white-space: nowrap;
-        background-color: rgba(255,255,255,0.05);
-        border: 1px solid #2A3742;
-        border-radius: 999px;
-        padding: 0.6rem 1.25rem;
-        font-weight: 600;
-        font-size: 0.92rem;
-        color: #9AA5AE;
+        background-color: rgba(255,255,255,0.05) !important;
+        border: 1px solid #2A3742 !important;
+        border-radius: 999px !important;
+        padding: 0.6rem 1.25rem !important;
+        margin: 0 !important;
         transition: all 0.15s ease;
     }
-    .stTabs [data-baseweb="tab"] p { font-weight: 600; font-size: 0.92rem; }
-    .stTabs [data-baseweb="tab"]:hover {
-        background-color: rgba(127,184,143,0.12);
-        border-color: #5F9E72;
-        color: #DCE3E8;
+    .stTabs [data-testid="stTab"] p {
+        font-weight: 600 !important;
+        font-size: 0.92rem !important;
+        color: #9AA5AE;
+        margin: 0 !important;
     }
-    .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #8FCB9E 0%, #5F9E72 100%);
-        border-color: #7FB88F;
+    .stTabs [data-testid="stTab"]:hover {
+        background-color: rgba(127,184,143,0.12) !important;
+        border-color: #5F9E72 !important;
+    }
+    .stTabs [data-testid="stTab"]:hover p { color: #DCE3E8; }
+    .stTabs [data-testid="stTab"][aria-selected="true"] {
+        background: linear-gradient(135deg, #8FCB9E 0%, #5F9E72 100%) !important;
+        border-color: #7FB88F !important;
         box-shadow: 0 4px 14px rgba(127,184,143,0.30);
     }
-    .stTabs [aria-selected="true"] p { color: #0F151C !important; }
+    .stTabs [data-testid="stTab"][aria-selected="true"] p { color: #0F151C !important; }
 
     .stButton>button {
         border-radius: 10px;
