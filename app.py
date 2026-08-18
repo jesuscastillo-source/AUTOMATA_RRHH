@@ -357,7 +357,13 @@ st.markdown(
         gap: 10px;
         flex-wrap: wrap;
         border-bottom: none !important;
+        box-shadow: none !important;
         padding-bottom: 0.6rem;
+    }
+    .stTabs [data-testid="stTab"]::before,
+    .stTabs [data-testid="stTab"]::after {
+        display: none !important;
+        content: none !important;
     }
     .stTabs [data-testid="stTab"] {
         height: auto;
@@ -366,6 +372,8 @@ st.markdown(
         border-radius: 999px !important;
         padding: 0.6rem 1.25rem !important;
         margin: 0 !important;
+        box-shadow: none !important;
+        outline: none !important;
         transition: all 0.15s ease;
     }
     .stTabs [data-testid="stTab"] p {
@@ -377,12 +385,18 @@ st.markdown(
     .stTabs [data-testid="stTab"]:hover {
         background-color: rgba(127,184,143,0.12) !important;
         border-color: #5F9E72 !important;
+        box-shadow: none !important;
     }
     .stTabs [data-testid="stTab"]:hover p { color: #DCE3E8; }
     .stTabs [data-testid="stTab"][aria-selected="true"] {
         background: linear-gradient(135deg, #8FCB9E 0%, #5F9E72 100%) !important;
         border-color: #7FB88F !important;
-        box-shadow: 0 4px 14px rgba(127,184,143,0.30);
+        box-shadow: 0 4px 14px rgba(127,184,143,0.30) !important;
+    }
+    .stTabs [data-testid="stTab"][aria-selected="true"]:focus,
+    .stTabs [data-testid="stTab"][aria-selected="true"]:focus-visible {
+        box-shadow: 0 4px 14px rgba(127,184,143,0.30) !important;
+        outline: none !important;
     }
     .stTabs [data-testid="stTab"][aria-selected="true"] p { color: #0F151C !important; }
 
