@@ -360,6 +360,9 @@ st.markdown(
         box-shadow: none !important;
         padding-bottom: 0.6rem;
     }
+    .stTabs [data-testid="stTab"] .react-aria-SelectionIndicator {
+        display: none !important;
+    }
     .stTabs [data-testid="stTab"]::before,
     .stTabs [data-testid="stTab"]::after {
         display: none !important;
